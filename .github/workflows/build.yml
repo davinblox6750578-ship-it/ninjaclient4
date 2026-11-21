@@ -33,6 +33,11 @@ jobs:
           }
           rootProject.name = 'ninjaclient'
           EOF
+          find src -name '*.java' -exec sed -i \
+            -e 's/cam\.getPos()/cam.getCameraPos()/g' \
+            -e 's/\bp\.getPos()/p.getEntityPos()/g' \
+            -e 's/golem\.getPos()/golem.getEntityPos()/g' \
+            -e 's/target\.getPos()/target.getEntityPos()/g' {} +
           gradle build
 
       - uses: actions/upload-artifact@v4
