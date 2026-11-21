@@ -33,6 +33,25 @@ jobs:
           }
           rootProject.name = 'ninjaclient'
           EOF
+          cat > src/main/resources/fabric.mod.json <<'EOF'
+          {
+            "schemaVersion": 1,
+            "id": "ninjaclient",
+            "version": "${version}",
+            "name": "NinjaClient",
+            "environment": "client",
+            "accessWidener": "ninjaclient.accesswidener",
+            "mixins": ["ninjaclient.mixins.json"],
+            "entrypoints": { "client": ["com.meuclient.MeuClient"] },
+            "depends": {
+              "fabricloader": ">=0.18.0",
+              "minecraft": "~1.21.11",
+              "java": ">=21",
+              "fabric-api": "*"
+            }
+          }
+          EOF
+          sed -i '/^jar {/,/^}/d' build.gradle
           find src -name '*.java' -exec sed -i \
             -e 's/cam\.getPos()/cam.getCameraPos()/g' \
             -e 's/\bp\.getPos()/p.getEntityPos()/g' \
